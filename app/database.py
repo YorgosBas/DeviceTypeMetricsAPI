@@ -6,6 +6,7 @@ DATABASE_URL = "postgresql://postgres:admin@pg-minikube-postgresql:5432/jsafraap
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+db = SessionLocal()
 
 def create_tables():
     Base.metadata.create_all(bind=engine)
