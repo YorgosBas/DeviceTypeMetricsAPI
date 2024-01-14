@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: device-type-metrics-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: device-type-metrics-api
+  template:
+    metadata:
+      labels:
+        app: device-type-metrics-api
+    spec:
+      containers:
+      - name: device-type-metrics-api
+        image: dbnmrs/device-type-metrics-api:latest
+        ports:
+        - containerPort: 8000
