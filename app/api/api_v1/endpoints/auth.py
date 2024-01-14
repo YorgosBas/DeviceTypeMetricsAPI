@@ -1,23 +1,22 @@
-from fastapi import APIRouter, HTTPException, Depends
-from sqlalchemy.orm import Session
-from .... import crud, schemas, database
-import requests
+import requests, os
+from fastapi import APIRouter, Depends
+from .... import crud, schemas
+from ....security import verify_token
 
 router = APIRouter()
+DEVICE_REGISTER_URL = os.getenv("DEVICE_REGISTER_URL", "http://127.0.0.1:8000/Device/register")
 
 @router.post("/auth")
-def log_auth(device_stat: schemas.DeviceStatCreate):
-    try:
-        data = device_stat.dict()
-        response = requests.post(url="http://127.0.0.1:8000/Device/register", json=data)
-        if response.status_code == 200:
-            return {"statusCode": 200, "message": "success"}
-        else:
-            return {"statusCode": 400, "message": "bad_request"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+def log_auth(device_stat: schemas.DeviceStatCreate, token: str = Depends(verify_token)):
+    data = device_stat.dict()
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.post(url=DEVICE_REGISTER_URL, json=data, headers=headers)
+    if response.status_code == 200:
+        return {"statusCode": 200, "message": "success"}
+    else:
+        return {"statusCode": 400, "message": "bad_request"}
     
 @router.get("/auth/statistics")
-def get_statistics(deviceType: str, db: Session = Depends(database.SessionLocal)):
-    count = crud.get_device_stats_count(db, deviceType)
+def get_statistics(deviceType: str):
+    count = crud.get_device_stats_count(deviceType)
     return {"deviceType": deviceType, "count": count}

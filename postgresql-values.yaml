@@ -1,0 +1,10 @@
+networkPolicy:
+  enabled: true
+  ingressRules:
+    primaryAccessOnlyFrom:
+      enabled: true
+      namespaceSelector:
+        matchLabels:
+          postgres-access: "true"
+  egressRules:
+    denyConnectionsToExternal: true
