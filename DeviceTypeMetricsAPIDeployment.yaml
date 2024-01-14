@@ -20,6 +20,11 @@ spec:
           valueFrom:
             secretKeyRef:
               name: pg-minikube-postgresql
-              key: database-url
+              key: postgres-url
+        - name: JWT_PUBLIC_KEY
+          valueFrom:
+            secretKeyRef:
+              name: jwt-public-key-secret
+              key: jwt-key
         ports:
         - containerPort: 8000
