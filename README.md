@@ -6,3 +6,8 @@ The latest approach was to organise it into a single project that has to do evey
 We could have a service mesh like istio to use Destionation Rules, Virtual Services and Autharisation Policies for the endpoints and application level security with keycloak or other Level 7 authentication. Network Policeis would be hard to implement.
 
 Changed the default values for postgresql chart to be accessible from specific nodes and not be available externally. Added simple pipeline to create a docker image and push it to [docker hub](https://hub.docker.com/repositories/dbnmrs). Helm chart for the application for the ease of deployment. And tried to integrate it with Keycloak. Implemented in python with fastAPI
+
+How to use
+```
+ curl -X POST "http://<external-ip>:8000/Log/auth" -H "accept: application/json" -H "Content-Type: application/json" -d '{"userKey": "testUser", "deviceType": "testDevice"}'
+```
