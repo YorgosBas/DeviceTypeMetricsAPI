@@ -19,4 +19,7 @@ def log_auth(device_stat: schemas.DeviceStatCreate, token: str = Depends(verify_
 @router.get("/auth/statistics")
 def get_statistics(deviceType: str):
     count = crud.get_device_stats_count(deviceType)
-    return {"deviceType": deviceType, "count": count}
+    if count is not None:
+        return {"deviceType": deviceType, "count": count}
+    else:
+        return {"deviceType": deviceType, "count": -1}
